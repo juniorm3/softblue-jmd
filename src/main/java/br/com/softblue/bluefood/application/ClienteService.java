@@ -13,9 +13,15 @@ public class ClienteService {
 	private ClienteRepository clienteRepository;
 
 	public void saveCliente(Cliente cliente) throws ValidationException {
-
 		if (!validadeEmail(cliente.getEmail(), cliente.getId())) {
 			throw new ValidationException("O e-mail esta duplicado!");
+		}
+
+		if (cliente.getId() != null) {
+			Cliente clienteDB = clienteRepository.findById(cliente.getId()).orElseThrow();
+			cliente.setSenha(clienteDB.getSenha());
+		} else {
+			cliente.encryptPassword();
 		}
 
 		clienteRepository.save(cliente);
