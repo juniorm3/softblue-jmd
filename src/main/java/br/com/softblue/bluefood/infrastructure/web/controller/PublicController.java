@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import br.com.softblue.bluefood.application.ClienteService;
 import br.com.softblue.bluefood.application.ValidationException;
 import br.com.softblue.bluefood.domain.cliente.Cliente;
+import br.com.softblue.bluefood.domain.restaurante.Restaurante;
 
 @Controller
 @RequestMapping(path = "/public")
@@ -23,11 +24,19 @@ public class PublicController {
 	private ClienteService clienteService;
 
 	@GetMapping("/cliente/new")
-	public String newClient(Model model) {
+	public String newCliente(Model model) {
 		model.addAttribute("cliente", new Cliente());
 		ControllerHelper.setEditMode(model, false);
 
 		return "cliente-cadastro";
+	}
+	
+	@GetMapping("/restaurante/new")
+	public String newRestaurante(Model model) {
+		model.addAttribute("restaurante", new Restaurante());
+		ControllerHelper.setEditMode(model, false);
+
+		return "restaurante-cadastro";
 	}
 
 	@PostMapping(path = "/cliente/save")
