@@ -11,7 +11,7 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository clienteRepository;
-
+	
 	public void saveCliente(Cliente cliente) throws ValidationException {
 		if (!validadeEmail(cliente.getEmail(), cliente.getId())) {
 			throw new ValidationException("O e-mail esta duplicado!");
