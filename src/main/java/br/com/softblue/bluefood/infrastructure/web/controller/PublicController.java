@@ -68,7 +68,7 @@ public class PublicController {
 	}
 	
 	@PostMapping(path = "/restaurante/save")
-	public String saveCliente(@ModelAttribute("restautante") 
+	public String saveRestaurante(@ModelAttribute("restaurante") 
 		@Valid Restaurante restaurante, Errors errors, Model model) {
 
 		if (!errors.hasErrors()) {

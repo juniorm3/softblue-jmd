@@ -1,5 +1,6 @@
 package br.com.softblue.bluefood.domain.restaurante;
 
+import java.awt.IllegalComponentStateException;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +17,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import br.com.softblue.bluefood.domain.usuario.Usuario;
 import lombok.EqualsAndHashCode;
@@ -38,6 +41,8 @@ public class Restaurante extends Usuario {
 
 	@Size(max = 80)
 	private String logotipo;
+	
+	private transient MultipartFile logotipoFile;
 
 	@NotNull(message = "A taxa de entrega não pode ser vazia")
 	@Min(0)
@@ -59,5 +64,14 @@ public class Restaurante extends Usuario {
 	@Size(min = 1, message = "O restaurante precisa ter pelo menos uma categoria")
 	@ToString.Exclude
 	private Set<CategoriaRestaurante> categorias = new HashSet<>();
+	
+	public void setLogotipoFileName() {
+		if(getId() == null) {
+			throw new  IllegalComponentStateException("É preciso primeiro gravar o registro");
+		}
+		
+		// TODO: Trocar forma de ler a expressão
+		this.logotipo = String.format("%04d-logo.%s", getId(), ".png");
+	}
 
 }

@@ -12,7 +12,7 @@
 					<span th:text="${msg}"></span>
 				</div><br />
 								
-				<form method="post" th:object="${restaurante}" th:action="${!editMode} ? @{/public/restaurante/save} : @{/restaurante/save}">
+				<form method="post" th:object="${restaurante}" th:action="${!editMode} ? @{/public/restaurante/save} : @{/restaurante/save}" enctype="multipart/form-data">
 					<fieldset>
 						<input type="hidden"  th:field="*{id}"/>
 					
@@ -54,7 +54,7 @@
 						
 						<label for="categoria">Categoria de comida: </label><br />	
 						<select name="categoria" id="categoria" multiple="multiple" th:field="*{categorias}" style="height: 90px" th:classappend="${#fields.hasErrors('categorias')} ? 'inputError' : ''">
-							<option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nome}">Salada</option>
+							<option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nome}"></option>
 						</select>
 						<div id="mensagemDeErro" th:if="${#fields.hasErrors('categorias')}">
 							<span th:errors="*{categorias}"></span>
@@ -62,7 +62,7 @@
 						<br /><br />
 						
 						<label for="logotipo">Logotipo: </label><br />	
-						<input type="file" id="logotipo" name="logotipo" placeholder="Selecionar..."><br /><br />
+						<input type="file" id="logotipo" name="logotipo" placeholder="Selecionar..." th:field="*{logotipoFile}"><br /><br />
 						
 						<div th:if="${!editMode}">
 							<label for="senha">Senha: </label><br />	
