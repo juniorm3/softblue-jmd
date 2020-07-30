@@ -12,22 +12,25 @@ public class RestauranteService {
 	@Autowired
 	private RestauranteRepository restauranteRepository;
 
+	@Autowired
+	private ImageService imageService;
+
 	public void saveRestaurante(Restaurante restaurante) throws ValidationException {
 		if (!validadeEmail(restaurante.getEmail(), restaurante.getId())) {
 			throw new ValidationException("O e-mail esta duplicado!");
 		}
-	
+
 		if (restaurante.getId() != null) {
 			Restaurante clienteDB = restauranteRepository.findById(restaurante.getId()).orElseThrow();
 			restaurante.setSenha(clienteDB.getSenha());
-			
+
 		} else {
 			restaurante.encryptPassword();
 			restaurante = restauranteRepository.save(restaurante);
 			restaurante.setLogotipoFileName();
-			//TODO: Upload!
+			imageService.uploadLogotipo(restaurante.getLogotipoFile(), restaurante.getLogotipo());
 		}
-		
+
 	}
 
 	private boolean validadeEmail(String email, Integer id) {
