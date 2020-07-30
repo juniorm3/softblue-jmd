@@ -1,4 +1,4 @@
-package br.com.softblue.bluefood.application;
+package br.com.softblue.bluefood.application.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
