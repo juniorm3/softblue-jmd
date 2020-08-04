@@ -59,7 +59,7 @@
 							</div><br />
 						</div>
 						
-						<input type="hidden" mame="senha" value="*" th:if="${editMode}"/>
+						<input type="hidden" name="senha" value="*" th:if="${editMode}"/>
 				
 						<input type="submit" th:value="${!editMode} ? 'Cadastrar' : 'Alterar'" />
 					</fieldset>
