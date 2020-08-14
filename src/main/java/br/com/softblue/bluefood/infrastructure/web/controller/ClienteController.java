@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.com.softblue.bluefood.application.service.ClienteService;
+import br.com.softblue.bluefood.application.service.RestauranteService;
 import br.com.softblue.bluefood.application.service.ValidationException;
 import br.com.softblue.bluefood.domain.cliente.Cliente;
 import br.com.softblue.bluefood.domain.cliente.ClienteRepository;
 import br.com.softblue.bluefood.domain.restaurante.CategoriaRestaurante;
 import br.com.softblue.bluefood.domain.restaurante.CategoriaRestauranteRepository;
+import br.com.softblue.bluefood.domain.restaurante.Restaurante;
+import br.com.softblue.bluefood.domain.restaurante.SearchFilter;
 import br.com.softblue.bluefood.util.SecurityUtils;
 
 @Controller
@@ -31,6 +34,9 @@ public class ClienteController {
 	
 	@Autowired
 	private CategoriaRestauranteRepository categoriaRestauranteRepository;
+	
+	@Autowired
+	private RestauranteService restauranteService;
 
 	@Autowired
 	private ClienteService clienteService;
@@ -39,6 +45,7 @@ public class ClienteController {
 	public String home(Model model) {
 		List<CategoriaRestaurante> categorias = categoriaRestauranteRepository.findAll(Sort.by("nome"));
 		model.addAttribute("categorias", categorias);
+		model.addAttribute("searchFilter", new SearchFilter());
 		
 		return "cliente-home";
 	}
@@ -72,4 +79,16 @@ public class ClienteController {
 		return "cliente-cadastro";
 	}
 
+	
+	@GetMapping(path = "/search")
+	public String search(
+			@ModelAttribute("searchFilter") SearchFilter filter,
+			Model model) {
+		
+		List<Restaurante> restaurantes = restauranteService.search(filter);
+		model.addAttribute("restaurantes", restaurantes);
+		
+		ControllerHelper.addCategoriasToRequest(categoriaRestauranteRepository, model);
+		return "cliente-busca";
+	}
 }

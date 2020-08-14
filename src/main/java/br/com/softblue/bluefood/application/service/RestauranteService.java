@@ -1,5 +1,7 @@
 package br.com.softblue.bluefood.application.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,6 +10,7 @@ import br.com.softblue.bluefood.domain.cliente.Cliente;
 import br.com.softblue.bluefood.domain.cliente.ClienteRepository;
 import br.com.softblue.bluefood.domain.restaurante.Restaurante;
 import br.com.softblue.bluefood.domain.restaurante.RestauranteRepository;
+import br.com.softblue.bluefood.domain.restaurante.SearchFilter;
 
 @Service
 public class RestauranteService {
@@ -60,5 +63,10 @@ public class RestauranteService {
 		}
 
 		return true;
+	}
+	
+	public List<Restaurante> search(SearchFilter filter){
+		//TODO: Considerar critérios de filtragem
+		return restauranteRepository.findAll();
 	}
 }
