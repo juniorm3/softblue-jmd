@@ -3,27 +3,29 @@
 	  xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout}" th:with="link=@{/cliente/home}">
 		
 	<body>
-		<div layout:fragment="content">
-		
-			<div>
-				<h1>É hora de rangar!</h1>
-				<form method="post" action="clienteBusca.html">
-					<fieldset>
-						<input type="text" name="email" placeholder="Buscar por...">
-						<input type="submit" value="Procurar">
-					</fieldset>
-				</form>
-				<br>
-			</div>
-			
-			<div id="divCategoriasComidaGeral">
-				<div id="divCategoriasComidaOpcao" th:each="categoria : ${categorias}">
-					<a href="#">
-					<img th:src="@{/images/categoria/} + ${categoria.imagem}" id="imgCategoriaComida"><br />
-					<span th:text=${categoria.nome}></span>
-					</a>
+		<div layout:fragment="content">		
+			<form id="form" method="get" th:object="${searchFilter}" th:action="@{/cliente/search}">		
+				<input id="searchType" type="hidden" th:field="*{searchType}" />
+				<input id="categoriaId" type="hidden" th:field="*{categoriaId}" />
+				
+				<div>
+					<h1>É hora de rangar!</h1>
+						<fieldset>
+							<input type="text" th:field="*{texto}" name="email" placeholder="Buscar por...">
+							<input type="button" value="Procurar" onclick="searchRest(null);">
+						</fieldset>
+					<br />
 				</div>
-			</div>
+				
+				<div id="divCategoriasComidaGeral">
+					<div id="divCategoriasComidaOpcao" th:each="categoria : ${categorias}">
+						<a href="#" th:onclick="'searchRest(' + ${categoria.id} + ');'">
+						<img th:src="@{/images/categoria/} + ${categoria.imagem}" id="imgCategoriaComida"><br />
+						<span th:text=${categoria.nome}></span>
+						</a>
+					</div>
+				</div>			
+			</form>
 	
 			<div>
 				<h1>Resultados</h1>
@@ -49,8 +51,14 @@
 					<br /><br />
 				</div>						
 			</div>
-	
-			<input type="button" value="Voltar" onClick="location.href='clienteHome.html';">
+			
+			<div th:if="${restaurantes.size() == 0}">
+				<span>Nenhum restaurante encontrado!</span>
+				<br />
+			</div>
+				
+			<br />
+			<input type="button" value="Voltar" th:onclick="'location.href=\'' + @{/cliente/home} + '\';'">
 		</div>
 	</body>
 </html>
