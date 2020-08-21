@@ -47,7 +47,7 @@ public class Restaurante extends Usuario {
 
 	@Size(max = 80)
 	private String logotipo;
-	
+
 	@UploadConstraint(acceptedTypes = FileType.PNG, message = "O arquivo não é um arquivo de imagem válido")
 	private transient MultipartFile logotipoFile;
 
@@ -60,37 +60,49 @@ public class Restaurante extends Usuario {
 	@Min(0)
 	@Max(120)
 	private Integer tempoEntregaBase;
-	
-	@ManyToMany (fetch = FetchType.EAGER)
-	@JoinTable (
-			name = "restaurante_has_categoria",
-			joinColumns = @JoinColumn(name = "restaurante_id"),
-			inverseJoinColumns = @JoinColumn(name = "categoria_restaurante_id")
-	)
-	
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "restaurante_has_categoria", joinColumns = @JoinColumn(name = "restaurante_id"), inverseJoinColumns = @JoinColumn(name = "categoria_restaurante_id"))
+
 	@Size(min = 1, message = "O restaurante precisa ter pelo menos uma categoria")
 	@ToString.Exclude
 	private Set<CategoriaRestaurante> categorias = new HashSet<>();
-	
+
 	@OneToMany(mappedBy = "restaurante")
 	private Set<ItemCardapio> itenCardapio = new HashSet<>(0);
-	
+
 	public void setLogotipoFileName() {
-		if(getId() == null) {
-			throw new  IllegalComponentStateException("É preciso primeiro gravar o registro");
+		if (getId() == null) {
+			throw new IllegalComponentStateException("É preciso primeiro gravar o registro");
 		}
-		
-		this.logotipo = String.format("%04d-logo.%s", getId(), FileType.of(logotipoFile.getContentType()).getExtension());
+
+		this.logotipo = String.format("%04d-logo.%s", getId(),
+				FileType.of(logotipoFile.getContentType()).getExtension());
 	}
-	
+
 	public String getCategoriasAsText() {
 		Set<String> strings = new LinkedHashSet<String>();
-		
+
 		for (CategoriaRestaurante categoria : categorias) {
 			strings.add(categoria.getNome());
 		}
-		
+
 		return StringUtils.concatenate(strings);
+	}
+
+	public Integer calcularTempoEntrega(String cep) {
+		int soma = 0;
+
+		for (char c : cep.toCharArray()) {
+			int v = Character.getNumericValue(c);
+			if (v > 0) {
+				soma += v;
+			}
+		}
+
+		soma /= 2;
+		
+		return tempoEntregaBase + soma;
 	}
 
 }
