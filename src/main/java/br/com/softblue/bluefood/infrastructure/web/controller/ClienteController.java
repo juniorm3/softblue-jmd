@@ -23,6 +23,7 @@ import br.com.softblue.bluefood.domain.cliente.ClienteRepository;
 import br.com.softblue.bluefood.domain.restaurante.CategoriaRestaurante;
 import br.com.softblue.bluefood.domain.restaurante.CategoriaRestauranteRepository;
 import br.com.softblue.bluefood.domain.restaurante.Restaurante;
+import br.com.softblue.bluefood.domain.restaurante.RestauranteRepository;
 import br.com.softblue.bluefood.domain.restaurante.SearchFilter;
 import br.com.softblue.bluefood.util.SecurityUtils;
 
@@ -35,6 +36,9 @@ public class ClienteController {
 	
 	@Autowired
 	private CategoriaRestauranteRepository categoriaRestauranteRepository;
+	
+	@Autowired
+	private RestauranteRepository restauranteRepository;
 	
 	@Autowired
 	private RestauranteService restauranteService;
@@ -95,7 +99,19 @@ public class ClienteController {
 		ControllerHelper.addCategoriasToRequest(categoriaRestauranteRepository, model);
 		
 		model.addAttribute("searchFilter", filter);
+		model.addAttribute("cep", SecurityUtils.loggedCliente().getCep());
 		
 		return "cliente-busca";
+	}
+	
+	@GetMapping(path = "/restaurante")
+	public String viewRestaurante(@RequestParam("restauranteId") Integer restauranteId,
+			Model model) {
+		
+		Restaurante restaurante = restauranteRepository.findById(restauranteId).orElseThrow();
+		model.addAttribute("restaurante", restaurante);
+		model.addAttribute("cep", SecurityUtils.loggedCliente().getCep());
+		
+		return "cliente-restaurante";
 	}
 }
