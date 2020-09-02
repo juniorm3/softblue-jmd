@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import br.com.softblue.bluefood.domain.pedido.Carrinho;
 import br.com.softblue.bluefood.domain.pedido.RestauranteDiferenteException;
@@ -27,6 +28,11 @@ public class CarrinhoController {
 		return new Carrinho();
 	}
 	
+	@GetMapping(path = "/visualizar")
+	public String viewCarrinho() {
+		return "cliente-carrinho";
+	}
+	
 	@GetMapping(path = "/adicionar")
 	public String adicionarItem(
 			@RequestParam("itemId") Integer itemId,
@@ -40,6 +46,24 @@ public class CarrinhoController {
 			carrinho.adiconarItem(itemCardapio, quantidade, observacoes);
 		} catch (RestauranteDiferenteException e) {
 			model.addAttribute("msg", "Não é possivel misturar comidas de restaurantes diferentes");
+		}
+		
+		return "cliente-carrinho";
+	}
+	
+	@GetMapping(path = "/remover")
+	public String adicionarItem(
+			@RequestParam("itemId") Integer itemId,
+			@ModelAttribute("carrinho") Carrinho carrinho,
+			SessionStatus sessionStatus,
+			Model model) {
+		
+		ItemCardapio itemCardapio = itemCardapioRepository.findById(itemId).orElseThrow();
+		
+		carrinho.removerItem(itemCardapio);
+		
+		if(carrinho.vazio()) {
+			sessionStatus.setComplete();
 		}
 		
 		return "cliente-carrinho";
