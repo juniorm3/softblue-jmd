@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -68,6 +69,10 @@ public class Pedido implements Serializable {
 	
 	@NotNull
 	private BigDecimal total;
+	
+	@NotNull
+	@Column(name = "taxa_entrega")
+	private BigDecimal taxaEntrega;
 	
 	@OneToMany(mappedBy = "id.pedido")
 	private Set<ItemPedido> itens;
