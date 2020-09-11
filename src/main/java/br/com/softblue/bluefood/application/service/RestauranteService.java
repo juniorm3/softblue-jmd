@@ -35,9 +35,11 @@ public class RestauranteService {
 		}
 
 		if (restaurante.getId() != null) {
-			Restaurante clienteDB = restauranteRepository.findById(restaurante.getId()).orElseThrow();
-			restaurante.setSenha(clienteDB.getSenha());
-
+			Restaurante restauranteDB = restauranteRepository.findById(restaurante.getId()).orElseThrow();
+			restaurante.setSenha(restauranteDB.getSenha());
+			restaurante.setLogotipo(restauranteDB.getLogotipo());
+			restauranteRepository.save(restaurante);
+			
 		} else {
 			restaurante.encryptPassword();
 			restaurante = restauranteRepository.save(restaurante);
