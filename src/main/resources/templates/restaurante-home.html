@@ -8,7 +8,7 @@
 				<h1>Configurações</h1>
 				<input type="button" value="Dados básicos" th:onclick="'location.href=\'' + @{/restaurante/edit} + '\';'"><br>
 				<input type="submit" value="Comidas" th:onclick="'location.href=\'' + @{/restaurante/comidas} + '\';'"><br>
-				<input type="submit" value="Relatório de Pedidos" onClick="location.href='restauranteRelatorioPedidos.html';"><br>
+				<input type="submit" value="Relatório de Pedidos" th:onclick="'location.href=\'' + @{/restaurante/relatorio/pedidos} + '\';'"><br>
 				<input type="submit" value="Relatório de Itens" onClick="location.href='restauranteRelatorioItens.html';"><br>
 				<input type="button" value="Sair" th:onclick="'location.href=\'' + @{/logout} + '\';'"><br>
 			</div>
