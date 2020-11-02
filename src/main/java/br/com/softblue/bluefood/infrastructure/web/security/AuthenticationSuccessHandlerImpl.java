@@ -19,10 +19,10 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
 		
 		Role role = SecurityUtils.loggedUser().getRole();
 		
-		if(role == role.CLIENTE) {
+		if(role == Role.CLIENTE) {
 			response.sendRedirect("cliente/home");
 			
-		} else if(role == role.RESTAURANTE) {
+		} else if(role == Role.RESTAURANTE) {
 			response.sendRedirect("restaurante/home");
 			
 		} else {
