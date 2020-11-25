@@ -24,7 +24,7 @@ public class ClienteServiceTest {
 	@MockBean
 	private ClienteRepository clienteRepository;
 	
-//	@Test
+	@Test
 	public void testeWhereDuplicateEmail() throws Exception {
 		
 		Cliente c1 = new Cliente();
